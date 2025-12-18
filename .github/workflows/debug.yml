@@ -1,4 +1,4 @@
-name: Build
+name: Debug
 
 on:
     workflow_dispatch:
@@ -55,9 +55,6 @@ jobs:
 
             - name: flutter build debug apk
               run: flutter build apk --debug --split-per-abi --dart-define-from-file=pili_release.json --pub
-
-            - name: flutter build apk
-              run: flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
 
             - name: 上传
               uses: actions/upload-artifact@v5

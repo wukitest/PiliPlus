@@ -1,4 +1,4 @@
-name: Debug
+name: Build
 
 on:
     workflow_dispatch:
@@ -6,7 +6,7 @@ on:
 jobs:
     android:
         name: Release Android
-        runs-on: ubuntu-24.04-arm
+        runs-on: ubuntu-latest
         permissions: write-all
 
         steps:
@@ -59,17 +59,9 @@ jobs:
             - name: flutter build apk
               run: flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
 
-            - name: rename
-              run: |
-                  for file in build/app/outputs/flutter-apk/app-*-release.apk; do
-                    abi=$(echo "$file" | sed -E 's|.*app-(.*)-release\.apk|\1|')
-                    mv "$file" "PiliPlus_android_${{ env.version }}_${abi}.apk"
-                  done
-              shell: bash
-
             - name: 上传
               uses: actions/upload-artifact@v5
               with:
                   name: Android
                   path: |
-                      PiliPlus_android_*.apk
+                      build/app/outputs/flutter-apk/*.apk
